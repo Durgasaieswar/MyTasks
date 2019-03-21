@@ -11,7 +11,7 @@ class App extends React.Component{
     renderInput = (props) => {
         return (
             <div>
-                <input  {...props.input.onChange}/>
+                <input  {...props.input.onChange}/>     //I am not able to type anything in Input tag
             </div>
         ); 
             
