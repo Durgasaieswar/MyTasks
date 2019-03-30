@@ -4,37 +4,58 @@ import api from './api'
 import News from './news'
 
 class App extends React.Component{
-    state={ term: null, news: []};
+    state={ term: null, news: [], selectTerm:'', newsOnSelect:[]};
     change = (event) => {
         event.preventDefault();
         this.setState({term: event.target.value});
-        if (this.state.term){
-            this.onSelect(this.state.term);
-            console.log(this.state.term);
-        }
     };
 
-    onSelect = async(term) => {
-        const list= await api.get("/everything",{params:{q: term}});
-        this.setState({news : list.data.articles});
+    onCallApi = (event) => {
+        event.preventDefault();
+        this.onSelect();
+    };
+
+    onSelect = async() => {
+        const list= await api.get("/sources");
+        //console.log(list);
+        this.setState({news : list.data.sources});
         //console.log(this.state.news);
-    }
+    };
+    onChange = (event) => {
+        event.preventDefault();
+        this.setState({selectTerm: event.target.value});
+        
+    };
+
+    onRequestTwo =(event)=>{
+        event.preventDefault();
+        this.display(this.state.selectTerm);
+    };
+
+    display= async(term)=>{
+        const list= await api.get("/everything",{params:{q: term}});
+        this.setState({newsOnSelect: list.data.articles});
+    };
 
     render(){
         return(
             <div>
-                <h2>DropDown List to Get News</h2>
-                    <select name="select" onChange={this.change}>
-                        <option value="">Please Select An Option</option>
-                        <option value="codeBrahma">codeBrahma</option>
-                        <option value="Banglore">Banglore</option>
-                        <option value="IndianPremierLeague">IndianPremierLeague</option>
-                        <option value="LokSabhaElections">LokSabha Elections</option>
-                    </select>
-                <h3>Headlines on {this.state.term}</h3>
-                <News list={this.state.news} term={this.state.term} />
-                    
-               
+                <center>
+                    <h2>Click On Get News</h2>
+                        <form onSubmit={this.onCallApi}>
+                            <input type="submit" value="Get News"/>
+                        </form>
+                        <form onSubmit={this.onRequestTwo}>
+                            <select onChange={this.onChange}>
+                                    {this.state.news.map((item,index) => {
+                                        return <option key={index}>{item.name}</option>
+                                    })}
+                            </select>
+                            <input type="submit"/>
+                        </form>
+                </center>
+                    <News list={this.state.newsOnSelect} term={this.state.selectTerm}/>
+                      
             </div>
         );
     }
