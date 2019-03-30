@@ -4,7 +4,7 @@ class Part1 extends React.Component{
     state={term: ''};
 
     componentWillReceiveProps(props){
-        this.setState({term: props})
+        this.setState({term: props.currentItem})
     }
     
     onInputChange = (event) => {
@@ -15,7 +15,7 @@ class Part1 extends React.Component{
     display= (event) => {
         event.preventDefault();
         this.props.onAdd(this.state.term);
-        this.setState({ term: ''});
+        this.setState({ term: '' });
     };
     
     render(){

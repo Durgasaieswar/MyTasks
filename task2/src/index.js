@@ -13,6 +13,7 @@ class App extends React.Component{
             if(!this.state.currentItem){
                 this.displayData.push(props);
                 this.setState({list: this.displayData});
+
             //console.log(this.state.list);
             }
             else{
@@ -37,6 +38,7 @@ class App extends React.Component{
 
 
     onEdit = (props) => {
+        console.log(props)
         this.setState({currentItem: props})
     };
     
