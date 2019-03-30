@@ -1,12 +1,22 @@
-export const title = (title) => {
+export const AddToDo = (props) => {
     return{
-        type: 'TITLE',
-        payload: title
+        type: 'AddToDo',
+        payload: props.title,
+        payload1: props.description,
     };
 };
-export const description = (desc) => {
+
+export const DeleteToDo = (props) => {
     return{
-        type: 'DESCRIPTION',
-        payload: desc
+        type: 'DeleteToDo',
+        id: props
     };
-}
+};
+
+export const EditToDo = (props) => {
+    return{
+        type: 'EditToDo',
+        id: props.id,
+        
+    };
+};
