@@ -13,10 +13,11 @@ export const DeleteToDo = (props) => {
     };
 };
 
-export const EditToDo = (props) => {
+export const EditToDo = (props,formValues) => {
     return{
         type: 'EditToDo',
-        id: props.id,
+        id: props,
+        payload: formValues
         
     };
 };

@@ -14,7 +14,8 @@ const reducer1 = (state=[],action) => {
         case 'DeleteToDo':
             return state.filter((item,index) => index !== action.id)
         case 'EditToDo' :
-            return state.splice(action.id,1)    //I need to change editToDo
+            state.splice(action.id,1,action.payload)
+            return state
         default:
             return state;
     }

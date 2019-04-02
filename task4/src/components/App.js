@@ -1,6 +1,7 @@
 import React from 'react'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, initialize } from 'redux-form'
 import { connect } from 'react-redux';
+
 
 import { AddToDo,DeleteToDo,EditToDo } from '../actions'
 import Part2 from './Part2'
@@ -8,9 +9,8 @@ import Part2 from './Part2'
 
 
 class App extends React.Component{
-    state={title:'',description:''};
-
-    renderInput = ({label}) => {
+   state={title: null,description:null,edit: false,id: null}
+   renderInput = ({input,label}) => {
         return (
             <div>
                 <div>
@@ -18,56 +18,53 @@ class App extends React.Component{
                 </div>
                 <input 
                 type="text" 
-                onChange={this.onChangeInput}  //onChange is not firing, if I assign value property 
+                {...input}  
                 className="ui field"
                 autoComplete="off"
                 />
             </div>
         ); 
             
-    };
-
-    renderInput1 = ({label}) => {
-        return (
-            <div>
-                <div>
-                    <label>{label}</label>
-                </div>
-                <input 
-                type="text" 
-                onChange={this.onChangeInput1} 
-                className="ui field"
-                autoComplete="off"
-                />
-            </div>
-        ); 
-            
-    };
-
-    onChangeInput = (event) => {
-        this.setState({title: event.target.value});
-    };
-
-    onChangeInput1 = (event) => {
-        this.setState({description: event.target.value});
     };
     
-    onSubmit = (event)=>{
-        event.preventDefault();
-        //this.setState({id: this.state.id + 1});
-        this.props.AddToDo({title: this.state.title, description:this.state.description});
-        this.setState({title: '',description: ''});
+    onSubmit = (formValues)=>{
+        console.log(formValues)
         
-    };
+        if (this.state.edit){
+            this.props.EditToDo(this.state.id,formValues)
+            this.setState({edit: false})
+        }
+        else{
+            this.props.AddToDo(formValues)
+        }
+        
+    }
+
     onDelete = (props) => {
         console.log(props,"index")
         this.props.DeleteToDo(props);
-        //this.setState({id: props})
     }
+
     onEdit = (props) => {
         console.log(props)
-        this.props.EditToDo(props);   //I need to change
-        
+        this.setState({ id: props})
+        this.props.form1.map((item,index) => {
+            if(index === props){
+                this.setState({title: item.title, description: item.description})
+            }
+            return null;
+        })
+        this.handleInitialize();
+        this.setState({edit: true});
+    }
+
+    handleInitialize = () => {
+        const data = {
+            title: this.state.title,
+            description: this.state.description
+        }
+        this.props.initialize(data)
+
     }
    
     render(){
@@ -75,9 +72,9 @@ class App extends React.Component{
             <div className="ui container">
                 <div className="ui segment">
                     <div className="ui segment">
-                        <form className="ui form" onSubmit={this.onSubmit}>
+                        <form className="ui form" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                             <Field name="title" component={this.renderInput} label="Title"/>
-                            <Field name="description" component={this.renderInput1} label="Description"/>
+                            <Field name="description" component={this.renderInput} label="Description"/>
                             <button className="ui primary button">Submit</button>
                         </form>
                     </div>
@@ -89,11 +86,12 @@ class App extends React.Component{
 }
 
 const combined = reduxForm({
-    form: 'ToDoForm' 
+    form: "ToDoForm",
+    initialize
 })(App);
 
 const mapStateToProps = (state) => {
-    console.log(state.form1,"from mapStateToProps")
+    //console.log(state.form1,"from mapStateToProps")
     return state;   
 }
 
