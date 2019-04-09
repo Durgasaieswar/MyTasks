@@ -8,11 +8,9 @@ import Part2 from './Part2'
 
 
 class App extends React.Component{
-   constructor(props){
-       super(props);
-       this.state={title: '',description:'',edit: false,id: null}
+   
+    state={title: '',description:'',edit: false,id: null}
     
-   }
    renderInput = ({input,label}) => {
         return (
             <div>
@@ -37,11 +35,11 @@ class App extends React.Component{
             this.props.EditToDo(this.state.id,formValues)
             this.setState({edit: false});
             this.setState({title: null, description:null})
-            this.handleInitialize();
+            this.formInitialize();
         }
         else{
             this.props.AddToDo(formValues);
-            this.handleInitialize();
+            this.formInitialize();
         }
         
     }
@@ -57,7 +55,7 @@ class App extends React.Component{
             this.props.form1.map((item,index) => {
                 if(index === props){
                     this.setState({title: item.title, description: item.description});
-                    this.handleInitialize()
+                    this.formInitialize()
                     //console.log(this.state.title,"onedit")
                 }
                 return null;
@@ -65,7 +63,7 @@ class App extends React.Component{
             this.setState({edit: true});
     }
 
-    handleInitialize = () => {
+    formInitialize = () => {
         var data = {
             title: this.state.title,
             description: this.state.description
