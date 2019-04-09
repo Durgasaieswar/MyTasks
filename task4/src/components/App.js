@@ -1,9 +1,8 @@
 import React from 'react'
 import { Field, reduxForm, initialize } from 'redux-form'
 import { connect } from 'react-redux';
-import _ from 'lodash'
 
-import { AddToDo,DeleteToDo,EditToDo,SearchToDo,display } from '../actions'
+import { AddToDo,DeleteToDo,EditToDo,SearchToDo } from '../actions'
 import Part2 from './Part2'
 
 
