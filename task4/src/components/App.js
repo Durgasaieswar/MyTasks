@@ -34,7 +34,6 @@ class App extends React.Component{
         if (this.state.edit){
             this.props.EditToDo(this.state.id,formValues)
             this.setState({edit: false});
-            this.setState({title: null, description:null})
             this.formInitialize();
         }
         else{
